@@ -1,0 +1,8 @@
+{
+  "java.format.settings.url": "eclipse-formatter.xml",
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "bancoapp/WEB-INF/lib/javax.servlet-api-4.0.0.jar",
+    "bancoapp/WEB-INF/lib/jcl-over-slf4j-2.0.9.jar"
+  ]
+}
