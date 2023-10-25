@@ -1,12 +1,24 @@
-FROM openjdk as compiler
-WORKDIR /bancoapp
-COPY ./bancoapp/ /bancoapp/
-RUN javac -cp bancoapp/WEB-INF/lib/javax.servlet-api-4.0.0.jar bancoapp/WEB-INF/lib/jcl-over-slf4j-2.0.9.jar bancoapp/src/main/webapp/*.java bancoapp/src/main/webapp/*/*.java
-RUN cp bancoapp/src/main/webapp/*/*.class bancoapp/WEB-INF/classes/
-RUN jar cvf bancoapp.war -C bancoapp .
+FROM openjdk:8 as stage
+
+WORKDIR /usr/local/tomcat/webapps/bancoapp
+
+COPY ./bancoapp/WEB-INF/lib/*.jar /usr/local/tomcat/lib/
+COPY ./bancoapp/WEB-INF/web.xml /usr/local/tomcat/conf/
+COPY ./bancoapp/ /usr/local/tomcat/webapps/bancoapp/
+
+RUN javac -cp /usr/local/tomcat/lib/javax.servlet-api-4.0.0.jar:/usr/local/tomcat/lib/jcl-over-slf4j-2.0.9.jar:/usr/local/tomcat/webapps/bancoapp/WEB-INF/lib/* \
+/usr/local/tomcat/webapps/bancoapp/src/main/webapp/servlets/*.java \
+/usr/local/tomcat/webapps/bancoapp/src/main/webapp/classes/*.java 
+# RUN cp /usr/local/tomcat/webapps/bancoapp/src/main/webapp/*/*.class /usr/local/tomcat/webapps/bancoapp/WEB-INF/classes/
+
+RUN cp -r `ls -A | grep -v "WEB-INF"` /usr/local/tomcat/webapps/bancoapp/WEB-INF/classes/ -v
+# cp -r /usr/local/tomcat/webapps/bancoapp/src /usr/local/tomcat/webapps/bancoapp/WEB-INF/classes/src/
+
+RUN jar cvf bancoapp.war -C /usr/local/tomcat/webapps/bancoapp .
+RUN jar tf bancoapp.war >> notepad 
 
 FROM tomcat:9.0.1-jre8-alpine
 
-COPY --from=compiler ./bancoapp/bancoapp.war /usr/local/tomcat/webapps/bancoapp.war
+COPY --from=stage /usr/local/tomcat/webapps/bancoapp/bancoapp.war /usr/local/tomcat/webapps/bancoapp.war
 
 CMD ["catalina.sh", "run"]
