@@ -1,4 +1,4 @@
-FROM openjdk:8 as stage
+FROM openjdk:17 as stage
 
 WORKDIR /usr/local/tomcat/webapps/bancoapp
 
@@ -17,8 +17,8 @@ RUN cp -r `ls -A | grep -v "WEB-INF"` /usr/local/tomcat/webapps/bancoapp/WEB-INF
 RUN jar cvf bancoapp.war -C /usr/local/tomcat/webapps/bancoapp .
 RUN jar tf bancoapp.war >> notepad 
 
-FROM tomcat:9.0.1-jre8-alpine
-
+FROM tomcat:8-jre17
+COPY Docker/server.xml /usr/local/tomcat/conf/server.xml
 COPY --from=stage /usr/local/tomcat/webapps/bancoapp/bancoapp.war /usr/local/tomcat/webapps/bancoapp.war
 
 CMD ["catalina.sh", "run"]

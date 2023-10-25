@@ -18,7 +18,6 @@ package src.main.webapp.servlets;
 */
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
