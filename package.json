@@ -1,0 +1,12 @@
+{
+  "name": "desenvolvimento-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "docker build -t bancoapp . && docker run --rm -it -p 8081:8080 bancoapp"
+  },
+  "author": "",
+  "license": "MIT"
+}
