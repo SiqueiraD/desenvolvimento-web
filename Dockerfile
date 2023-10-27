@@ -18,8 +18,9 @@ RUN jar cvf bancoapp.war -C /usr/webapps/bancoapp/WebContent .
 RUN jar tf bancoapp.war >> /usr/webapps/bancoapp/WebContent/notepad 
 
 FROM tomcat:8-jre17
+
 COPY ./Docker/server.xml /usr/local/tomcat/conf/server.xml
-# COPY ./bancoapp/WebContent/WEB-INF/web.xml /usr/local/tomcat/conf/web.xml
+
 COPY --from=stage /usr/webapps/bancoapp/WebContent/ /usr/local/tomcat/webapps/bancoapp
 COPY --from=stage /usr/webapps/bancoapp/bancoapp.war /usr/local/tomcat/webapps/bancoapp.war
 

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  build:
+    # will build ./docker/web/Dockerfile
+    build: ./build
+    volumes:
+      - ./bancoapp:/usr/webapps/bancoapp
+      - ./out:/usr/destination
+  web:
+    image: tomcat:8-jre17
+    # build: ./web
+    depends_on:
+      - "build"
+    ports:
+      - 8081:8080
+    volumes:
+      - ./out/bancoapp.war:/usr/local/tomcat/webapps/bancoapp.war
+      - ./out/WebContent:/usr/local/tomcat/webapps/bancoapp
+      - ./Docker/server.xml:/usr/local/tomcat/conf/server.xml
+    command: ["catalina.sh", "run"]
