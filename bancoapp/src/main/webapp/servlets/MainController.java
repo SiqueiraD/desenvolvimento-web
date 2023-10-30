@@ -16,6 +16,9 @@ package src.main.webapp.servlets;
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+import src.main.webapp.domain.gerenciamento.Acesso;
+import src.main.webapp.service.Conexao;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -51,6 +54,9 @@ public class MainController extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     this.cont++;
+    Conexao conexao = new Conexao();
+    Acesso acesso = new Acesso();
+    var con = conexao.getConexao();
     response.sendRedirect("main");
   }
 }

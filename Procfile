@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -jar bancoapp/WebContent/WEB-INF/lib/webapp-runner-9.0.80.0.jar --port $PORT bancoapp/bancoapp.war

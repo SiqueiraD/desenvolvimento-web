@@ -1,20 +1,57 @@
 version: "3"
 services:
-  build:
-    # will build ./docker/web/Dockerfile
-    build: ./build
+  build-runner:
+    image: openjdk:17
+    working_dir: '/usr/webapps/bancoapp'
     volumes:
       - ./bancoapp:/usr/webapps/bancoapp
       - ./out:/usr/destination
-  web:
+    command: bash -c "rm bancoapp.war && echo 'compila java'
+      && javac -cp /usr/webapps/bancoapp/WebContent/WEB-INF/lib/javax.servlet-api-4.0.0.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/jcl-over-slf4j-2.0.9.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/*
+      /usr/webapps/bancoapp/src/main/webapp/servlets/*.java
+      /usr/webapps/bancoapp/src/main/webapp/service/*.java
+      /usr/webapps/bancoapp/src/main/webapp/domain/gerenciamento/*.java
+      /usr/webapps/bancoapp/src/main/webapp/domain/pagamento/*.java
+      /usr/webapps/bancoapp/src/main/webapp/domain/seguranca/*.java
+      && echo 'empaconta java'
+      && jar cvf bancoapp.war -C /usr/webapps/bancoapp/WebContent .
+      && mv /usr/webapps/bancoapp/src/main/webapp/servlets/*.class -t /usr/webapps/bancoapp/WebContent/WEB-INF/classes/src/main/webapp/servlets
+      && mv /usr/webapps/bancoapp/src/main/webapp/service/*.class -t /usr/webapps/bancoapp/WebContent/WEB-INF/classes/src/main/webapp/service
+      && mv /usr/webapps/bancoapp/src/main/webapp/domain/gerenciamento/*.class -t /usr/webapps/bancoapp/WebContent/WEB-INF/classes/src/main/webapp/domain/gerenciamento
+      && mv /usr/webapps/bancoapp/src/main/webapp/domain/pagamento/*.class -t /usr/webapps/bancoapp/WebContent/WEB-INF/classes/src/main/webapp/domain/pagamento
+      && mv /usr/webapps/bancoapp/src/main/webapp/domain/seguranca/*.class -t /usr/webapps/bancoapp/WebContent/WEB-INF/classes/src/main/webapp/domain/seguranca
+      && rm -rf /usr/destination/* &&  echo 'Copia para o destino'
+      && cp -r /usr/webapps/bancoapp/* /usr/destination"
+  tomcat-runner:
     image: tomcat:8-jre17
-    # build: ./web
     depends_on:
-      - "build"
+      build-runner:
+        condition: service_completed_successfully
     ports:
       - 8081:8080
+      - 5005:5005
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - ./out/bancoapp.war:/usr/local/tomcat/webapps/bancoapp.war
       - ./out/WebContent:/usr/local/tomcat/webapps/bancoapp
       - ./Docker/server.xml:/usr/local/tomcat/conf/server.xml
     command: ["catalina.sh", "run"]
+  db-server:
+    image: mysql:8.0.11
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user123
+      - MYSQL_DATABASE=dbjava
+#  web-runner:
+#    image: openjdk:17
+#    depends_on:
+#      - "build-runner"
+#    ports:
+#      - 8081:8080
+#    volumes:
+#      - ./bancoapp:/usr/webapps/bancoapp
+#    command: java -jar /usr/webapps/bancoapp/WebContent/WEB-INF/lib/webapp-runner-9.0.80.0.jar /usr/webapps/bancoapp/bancoapp.war

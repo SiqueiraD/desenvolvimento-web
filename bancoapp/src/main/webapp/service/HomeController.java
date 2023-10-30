@@ -1,7 +1,6 @@
-package src.main.webapp.controllers;
+package src.main.webapp.service;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
