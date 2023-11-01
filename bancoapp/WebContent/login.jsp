@@ -39,8 +39,8 @@ pageEncoding="utf-8"%>
                 <input
                   type="text"
                   class="form-control"
-                  value="Balrog"
-                  name="nome"
+                  value="12345678911"
+                  name="CPF"
                   aria-describedby="emailHelp"
                   placeholder="Nome"
                 />
@@ -58,7 +58,7 @@ pageEncoding="utf-8"%>
                   style="font-size: large; font-weight: bolder; color: red"
                 >
                   <% 
-									String erro = (String) request.getAttribute("erros"); 
+									String erro = (String) request.getAttribute("mensagemErro");
 									if (erro != null) { 
 										out.println(erro); 
 										out.println("<br />"); 

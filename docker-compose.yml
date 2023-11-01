@@ -46,6 +46,9 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=user123
       - MYSQL_DATABASE=dbjava
+    volumes:
+      - ./Docker/sql:/docker-entrypoint-initdb.d
+
 #  web-runner:
 #    image: openjdk:17
 #    depends_on:
