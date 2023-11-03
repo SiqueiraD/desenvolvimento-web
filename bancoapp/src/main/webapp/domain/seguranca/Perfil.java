@@ -61,4 +61,12 @@ public class Perfil extends DaoGenerico<Perfil> {
         return this.listaFuncionalidades;
     }
 
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        this.propriedades.put("nome", nome);
+        Nome = nome;
+    }
 }

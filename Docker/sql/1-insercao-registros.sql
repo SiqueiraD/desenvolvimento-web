@@ -1,11 +1,11 @@
-INSERT INTO dbjava.Usuario (IdUsuario, CPF, Nome, Senha, Telefone, Endereco)
-VALUES (2, '12345678911', 'Errico Malatesta', '81dc9bdb52d04dc20036dbd8313ed055', '21987132239', 'Av. Central, 13');
+INSERT INTO dbjava.Usuario (IdUsuario, CPF, Nome, Email, Senha, Telefone, Endereco)
+VALUES (2, '12345678911', 'Errico Malatesta', 'e.malatesta@proton.me', '81dc9bdb52d04dc20036dbd8313ed055', '21987132239', 'Av. Central, 13');
 
 insert into dbjava.Perfil (IdPerfil, Nome)
 values (2, 'Gerente Geral');
 
 insert into dbjava.Funcionalidade (IdFuncionalidade, Nome, URL)
-values (2, 'Cadastrar Usuario', '/acesso/cadastro/usuario'),
+values (2, 'Cadastrar Usuario', '/cadastro/conta'),
        (3, 'Contratar Funcionario', '/acesso/cadastro/usuario'),
        (4, 'Abrir conta', '/acesso/cadastro/conta'),
        (5, 'Fechar conta', '/acesso/cadastro/conta'),

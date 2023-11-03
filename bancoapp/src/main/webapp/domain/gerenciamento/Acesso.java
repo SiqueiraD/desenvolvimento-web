@@ -68,4 +68,12 @@ public class Acesso extends DaoGenerico<Acesso> {
         this.propriedades.put("idAcesso", idAcesso);
         this.IdAcesso = idAcesso;
     }
+
+    public int getIdPerfil() {
+        return IdPerfil;
+    }
+
+    public int getIdUsuario() {
+        return IdUsuario;
+    }
 }

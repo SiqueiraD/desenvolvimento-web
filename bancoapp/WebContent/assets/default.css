@@ -1,0 +1,10 @@
+
+html, body {
+    height: 100%;
+    background-color: #515e67;
+    color: ghostwhite;
+}
+
+.bancofalcao{
+    filter:invert(1);
+}

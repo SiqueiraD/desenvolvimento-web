@@ -29,8 +29,9 @@ public class LoginController extends HttpServlet {
         usuario.setCPF(req.getParameter("CPF"));
         usuario.setSenha(req.getParameter("senha"));
         String token = null;
+        HttpSession session = req.getSession();
         try {
-            token = segurancaAppService.Logar(usuario);
+            token = segurancaAppService.Logar(usuario, session);
             if (token.isEmpty()) {
                 req.getRequestDispatcher("/login.jsp").forward(req,resp);
                 return;
@@ -40,9 +41,8 @@ public class LoginController extends HttpServlet {
             req.getRequestDispatcher("/login.jsp").forward(req,resp);
             return;
         }
-        HttpSession session = req.getSession();
         session.setAttribute("token", token);
-        req.getRequestDispatcher( "/acesso/index.html").forward(req,resp);
-//        resp.sendRedirect(req.getContextPath() + "/acesso/index.html");
+        req.getRequestDispatcher( "/acesso/index.jsp").forward(req,resp);
+//        resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
     }
 }

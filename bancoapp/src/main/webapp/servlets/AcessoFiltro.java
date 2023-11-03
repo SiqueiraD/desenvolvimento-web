@@ -22,9 +22,9 @@ public class AcessoFiltro implements Filter {
                          FilterChain chain)
             throws IOException, ServletException {
 
-        String token = ((HttpServletRequest) request).getSession().getAttribute("token").toString();
+        var token = ((HttpServletRequest) request).getSession().getAttribute("token");
 
-        if (new SegurancaAppService().VerificarTokenValido(token)) {
+        if (token != null && new SegurancaAppService().VerificarTokenValido(token.toString())) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("/login");

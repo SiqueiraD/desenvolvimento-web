@@ -2,14 +2,17 @@ package src.main.webapp.service;
 
 import src.main.webapp.domain.gerenciamento.Acesso;
 import src.main.webapp.domain.gerenciamento.Usuario;
+import src.main.webapp.domain.seguranca.Perfil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -25,8 +28,9 @@ public class SegurancaAppService {
         return token;
     }
 
-    public String Logar(Usuario usuario) throws ClientException {
+    public String Logar(Usuario usuario, HttpSession session) throws ClientException {
         String token = "";
+        String acessos = "";
         try {
             Usuario preparaConsulta = new Usuario();
             preparaConsulta.setCPF(usuario.getCPF());
@@ -34,14 +38,17 @@ public class SegurancaAppService {
             if (usuarioBanco.isPresent() && usuario.getSenha().equals(usuarioBanco.get().getSenha())) {
                 var preparaConsultaAcesso = new Hashtable<String, Object>();
                 preparaConsultaAcesso.put("IdUsuario", usuarioBanco.get().getValorId());
-                Optional<Acesso> acessoBanco = new Acesso(preparaConsultaAcesso).listar().stream().findFirst();
-                if (acessoBanco.isEmpty())
+                List<Acesso> listaAcessoBanco = new Acesso(preparaConsultaAcesso).listar().stream().toList();
+                if (listaAcessoBanco == null || listaAcessoBanco.isEmpty())
                     throw new ClientException("Não há acesso para o seu usuário, entre em contato com gerente");
-                token = usuario.getCPF() + usuario.getSenha();
-                MessageDigest md = null;
-                md = MessageDigest.getInstance("MD5");
-                md.update(token.getBytes());
-                byte[] hash = md.digest();
+                else if(listaAcessoBanco.stream().count() > 1) {
+                    for (Acesso acessoBanco : listaAcessoBanco) {
+                        var perfil = new Perfil().consultar(acessoBanco.getIdPerfil());
+                        acessos = acessos + perfil.getNome() + "|";
+                    }
+                    session.setAttribute("acessos", acessos);
+                }
+                session.setAttribute("nome", usuarioBanco.get().getNome());
                 token = Instant.now().getEpochSecond() + "|" + MontaToken(usuario.getCPF(), usuario.getSenha());
             }
 
