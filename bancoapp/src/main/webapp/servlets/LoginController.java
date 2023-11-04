@@ -11,38 +11,51 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getHeader("mensagemErro") != null && !req.getHeader("mensagemErro").isEmpty())
-            resp.addHeader("mensagemErro",req.getHeader("mensagemErro"));
-        resp.sendRedirect(req.getContextPath() + "/login.jsp");
+        String men = req.getSession().getAttribute("mensagemErro") != null ?
+                req.getSession().getAttribute("mensagemErro").toString() : null;
+        req.getSession().invalidate();
+        if (men != null)
+            req.getSession().setAttribute("mensagemErro", men);
+        req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var segurancaAppService = new SegurancaAppService();
-        var usuario = new Usuario();
-        usuario.setCPF(req.getParameter("CPF"));
-        usuario.setSenha(req.getParameter("senha"));
-        String token = null;
+        var cpf = req.getParameter("CPF");
+        var senha = req.getParameter("senha");
+        Hashtable<String, Object> objSessions = null;
         HttpSession session = req.getSession();
         try {
-            token = segurancaAppService.Logar(usuario, session);
+            if (cpf == null || senha == null || cpf.isEmpty() || senha.isEmpty()) {
+                req.getSession().setAttribute("mensagemErro", "Deve preencher os campos corretamente");
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
+                return;
+            }
+            objSessions = SegurancaAppService.Logar(cpf, senha);
+            String token = (String) objSessions.get("token");
             if (token.isEmpty()) {
-                req.getRequestDispatcher("/login.jsp").forward(req,resp);
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
                 return;
             }
         } catch (ClientException e) {
-            req.setAttribute("mensagemErro", e.getMessage());
-            req.getRequestDispatcher("/login.jsp").forward(req,resp);
+            String mensagem = e.getMessage();
+            req.getSession().setAttribute("mensagemErro", mensagem);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
             return;
         }
-        session.setAttribute("token", token);
-        req.getRequestDispatcher( "/acesso/index.jsp").forward(req,resp);
-//        resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
+        for (Map.Entry<String, Object> map :
+                objSessions.entrySet()) {
+            session.setAttribute(map.getKey(), map.getValue());
+        }
+//        req.getRequestDispatcher("/acesso/index").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
     }
 }

@@ -1,9 +1,11 @@
 package src.main.webapp.domain.gerenciamento;
 
+import src.main.webapp.domain.pagamento.Conta;
 import src.main.webapp.domain.seguranca.Funcionalidade;
 import src.main.webapp.domain.seguranca.Perfil;
 import src.main.webapp.service.DaoGenerico;
 
+import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -17,20 +19,48 @@ public class Acesso extends DaoGenerico<Acesso> {
     public Acesso() {
         super();
     }
+
     public Acesso(Hashtable<String, Object> propriedades) {
         super(propriedades);
     }
 
-    public Perfil getPerfil() {
+    public Perfil getPerfil(){
+        if (this.Perfil == null) {
+            try {
+                this.Perfil = new Perfil().consultar(this.IdPerfil);
+            } catch (SQLException e) {
+                throw new RuntimeException("Não foi possível consultar o perfil de acesso");
+            }
+        }
         return Perfil;
     }
+
     public Usuario getUsuario() {
         return Usuario;
     }
 
-    public List<Funcionalidade> getListaFuncionalidade(){
+    public List<Conta> getListaContas() {
+        var preparaConsulta = new Conta();
+        preparaConsulta.setIdAcesso(Integer.parseInt(this.getValorId().toString()));
+        try {
+            return preparaConsulta.listar();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível listar as contas do Perfil de acesso.");
+        }
+    }
+    public List<Funcionalidade> getListaFuncionalidade() {
         return this.getPerfil().getListaFuncionalidades();
     }
+    public List<Conta> getListaConta() {
+        var preparaConsulta = new Conta();
+        preparaConsulta.setIdAcesso(this.IdAcesso);
+        try {
+            return preparaConsulta.listar();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível consultar a lista de contas do perfil de acesso");
+        }
+    }
+
 
 
     @Override
@@ -50,7 +80,7 @@ public class Acesso extends DaoGenerico<Acesso> {
 
     @Override
     public Class<Acesso> getTipoClass() {
-        return (Class<Acesso>)this.getClass();
+        return (Class<Acesso>) this.getClass();
     }
 
 

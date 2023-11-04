@@ -17,15 +17,10 @@
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="assets/default.css">
-    <style>
-        #login {
-            padding-top: 1em;
-        }
-    </style>
     <title>Cadastro</title>
 </head>
 <body>
-<%@include file="../../header.jsp"%>
+<%@include file="../../header.jsp" %>
 
 <!-- Formulário de cadastro com os campos: cpf, nome, senha, email, endereço, telefone -->
 <div class="container mt-5 pt-5">
@@ -40,37 +35,42 @@
         <div class="form-group row">
             <label for="nome" class="col-sm-2 col-form-label">Nome</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo"
+                       required>
             </div>
         </div>
         <div class="form-group row">
             <label for="senha" class="col-sm-2 col-form-label">Senha</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite uma senha forte" required>
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite uma senha forte"
+                       required>
             </div>
         </div>
         <div class="form-group row">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" name ="email" placeholder ="Digite seu email válido " required >
-            </div >
-        </div >
-        <div class ="form-group row ">
-            <label for ="endereco "class ="col-sm-2 col-form-label ">Endereço</label >
-            <div class ="col-sm-10 ">
-                <input type ="text "class ="form-control "id ="endereco "name ="endereco "placeholder ="Digite seu endereço completo "required >
-            </div >
-        </div >
-        <div class ="form-group row ">
-            <label for ="telefone "class ="col-sm-2 col-form-label ">Telefone</label >
-            <div class ="col-sm-10 ">
-                <input type ="tel "class ="form-control "id ="telefone "name ="telefone "placeholder ="Digite seu número de telefone com DDD "required >
-            </div >
-        </div >
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email válido "
+                       required>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="endereco " class="col-sm-2 col-form-label ">Endereço</label>
+            <div class="col-sm-10 ">
+                <input type="text " class="form-control " id="endereco " name="endereco "
+                       placeholder="Digite seu endereço completo " required>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="telefone " class="col-sm-2 col-form-label ">Telefone</label>
+            <div class="col-sm-10 ">
+                <input type="tel " class="form-control " id="telefone " name="telefone "
+                       placeholder="Digite seu número de telefone com DDD " required>
+            </div>
+        </div>
         <!-- Botão para enviar o formulário -->
-        <button type ="submit "class ="btn btn-primary btn-block ">Enviar</button >
-    </form >
-</div >
+        <button type="submit " class="btn btn-primary btn-block ">Enviar</button>
+    </form>
+</div>
 
 
 </body>

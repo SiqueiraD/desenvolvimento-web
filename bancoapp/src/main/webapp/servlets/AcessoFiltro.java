@@ -24,7 +24,7 @@ public class AcessoFiltro implements Filter {
 
         var token = ((HttpServletRequest) request).getSession().getAttribute("token");
 
-        if (token != null && new SegurancaAppService().VerificarTokenValido(token.toString())) {
+        if (token != null && SegurancaAppService.VerificarTokenValido(token.toString(), ((HttpServletRequest) request).getSession().getAttribute("tempo"))) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("/login");

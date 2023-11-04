@@ -1,16 +1,20 @@
 package src.main.webapp.domain.gerenciamento;
 
+import src.main.webapp.domain.pagamento.Conta;
 import src.main.webapp.service.DaoGenerico;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Hashtable;
+import java.util.List;
 
 public class Usuario extends DaoGenerico<Usuario> {
     private int IdUsuario;
     private String CPF;
     private String Nome;
+    private String Email;
     private String Senha;
     private String Endereco;
     private String Telefone;
@@ -22,6 +26,15 @@ public class Usuario extends DaoGenerico<Usuario> {
         super(propriedades);
     }
 
+    public List<Acesso> getListaAcessos() {
+        var preparaConsulta = new Acesso();
+        preparaConsulta.setIdUsuario(Integer.parseInt(this.getValorId().toString()));
+        try {
+            return preparaConsulta.listar();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível listar os perfis de acesso do usuario.");
+        }
+    }
     @Override
     public String getNomeTabela() {
         return "Usuario";

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="utf-8"  %>
+         pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,50 +19,53 @@
     <title>Login</title>
 </head>
 <body>
-<%@include file="header.jsp"%>
+<%@include file="header.jsp" %>
 
 <div class="container mt-5 pt-5">
-    <h1 class="text-center">Entre com seu CPF ou conta e a senha</h1>
-    <form action="login" method="post" id="login">
-        <div class="form-group">
-            <label for="CPF">CPF</label>
-            <input
-                    type="text"
-                    id="CPF"
-                    class="form-control"
-                    value="12345678911"
-                    name="CPF"
-                    aria-describedby="emailHelp"
-                    placeholder="Nome"
-            />
-        </div>
-        <div class="form-group">
-            <label for="senha">Senha</label>
-            <input
-                    type="password"
-                    id="senha"
-                    class="form-control"
-                    name="senha"
-                    value="1234"
-                    placeholder="Password"
-            />
-            <label
-                    style="font-size: large; font-weight: bolder; color: red"
-            >
-                <%
-                    String erro = (String) request.getAttribute("erros");
-                    if (erro != null) {
-                        out.println(erro);
-                        out.println("<br />");
-                    }
-                %>
-            </label>
-        </div>
-        <input type="hidden" name="parametro" value="login"/>
-        <button type="submit" value="Logar" class="btn btn-primary">
-            Entrar
-        </button>
-    </form>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+        <h1 class="text-center">Entre com CPF e senha</h1>
+        <form action="login" method="post" id="login">
+            <div class="form-group">
+                <label for="CPF">CPF</label>
+                <input
+                        type="text"
+                        id="CPF"
+                        class="form-control"
+                        value="12345678911"
+                        name="CPF"
+                        aria-describedby="emailHelp"
+                        placeholder="Nome"
+                />
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input
+                        type="password"
+                        id="senha"
+                        class="form-control"
+                        name="senha"
+                        value="1234"
+                        placeholder="Password"
+                />
+                <label
+                        style="font-size: large; font-weight: bolder; color: red"
+                >
+                    <%
+                        String erro = (String) session.getAttribute("mensagemErro");
+                        if (erro != null) {
+                            out.println(erro);
+                            out.println("<br />");
+                            session.setAttribute("mensagemErro", null);
+                        }
+                    %>
+                </label>
+            </div>
+            <input type="hidden" name="parametro" value="login"/>
+            <button type="submit" value="Logar" class="btn btn-primary">
+                Entrar
+            </button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

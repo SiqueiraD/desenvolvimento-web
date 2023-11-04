@@ -6,7 +6,7 @@ services:
     volumes:
       - ./bancoapp:/usr/webapps/bancoapp
       - ./out:/usr/destination
-    command: bash -c "rm bancoapp.war && echo 'compila java'
+    command: bash -c "echo 'compila java'
       && javac -cp /usr/webapps/bancoapp/WebContent/WEB-INF/lib/javax.servlet-api-4.0.0.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/jcl-over-slf4j-2.0.9.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar:/usr/webapps/bancoapp/WebContent/WEB-INF/lib/*
       /usr/webapps/bancoapp/src/main/webapp/servlets/*.java
       /usr/webapps/bancoapp/src/main/webapp/service/*.java

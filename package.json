@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker build -t bancoapp . && docker run --rm -it -p 8081:8080 --name bancoapp-container bancoapp",
-    "compose": "docker compose up --build"
+    "compose": "docker compose up --build --remove-orphans --renew-anon-volumes  --force-recreate"
   },
   "author": "",
   "license": "LGPL-3.0-only"

@@ -163,6 +163,39 @@ public abstract class DaoGenerico<T> {
     }
 
     // Método para consultar um objeto do tipo T pelo seu id no banco de dados
+    public List<T> listarPersonalizado(QueryParamsSQL queryParamsSQL) throws SQLException {
+        Connection conn = getConnection();
+        if (queryParamsSQL.Query == null)
+            queryParamsSQL.Query = QueryListar();
+        if(queryParamsSQL.Top > 0)
+            queryParamsSQL.Query = queryParamsSQL.Query + " LIMIT " + queryParamsSQL.Top;
+        if(queryParamsSQL.Skip > 0)
+            queryParamsSQL.Query = queryParamsSQL.Query + " OFFSET " + queryParamsSQL.Skip;
+        PreparedStatement ps = conn.prepareStatement(queryParamsSQL.Query);
+        int i = 1;
+        for (Object valor : this.propriedades.values()) {
+            ps.setObject(i, valor);
+            i++;
+        }
+
+        // Executar o statement e obter o resultado
+        ResultSet rs = ps.executeQuery();
+
+        // Criar uma lista para armazenar os objetos do tipo T
+        List<T> lista = new ArrayList<>();
+
+        // Iterar sobre o resultado e converter cada linha em um objeto do tipo T
+        while (rs.next()) {
+            T obj = converterResultSet(rs);
+            lista.add(obj);
+        }
+
+        // Fechar a conexão e retornar a lista
+        conn.close();
+        return lista;
+    }
+
+    // Método para consultar um objeto do tipo T pelo seu id no banco de dados
     public T consultar(Object id) throws SQLException {
         // Montar a query SQL com o nome da tabela e do campo id
         StringBuilder query = new StringBuilder();
@@ -195,8 +228,7 @@ public abstract class DaoGenerico<T> {
         return obj;
     }
 
-    // Método para listar todos os objetos do tipo T do banco de dados
-    public List<T> listar() throws SQLException {
+    private String QueryListar() {
         // Montar a query SQL com o nome da tabela
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM ");
@@ -209,12 +241,17 @@ public abstract class DaoGenerico<T> {
             }
             query.delete(query.length() - 2, query.length());
         }
+        return query.toString();
+    }
 
+    // Método para listar todos os objetos do tipo T do banco de dados
+    public List<T> listar() throws SQLException {
+        String query = QueryListar();
         // Obter uma conexão com o banco de dados
         Connection conn = getConnection();
 
         // Criar um prepared statement com a query montada
-        PreparedStatement ps = conn.prepareStatement(query.toString());
+        PreparedStatement ps = conn.prepareStatement(query);
         int i = 1;
         for (Object valor : this.propriedades.values()) {
             ps.setObject(i, valor);
