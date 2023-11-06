@@ -14,7 +14,6 @@ public class Conta extends DaoGenerico<Conta> {
     private int IdAcesso;
 
     private String NumeroConta;
-    private Titular Titular;
     private double SaldoAtual;
     private List<Movimentacao> listaMovimentacoes;
 
@@ -74,19 +73,6 @@ public class Conta extends DaoGenerico<Conta> {
             throw new RuntimeException("Não foi possível consultar as movimentações da conta");
         }
         return listaMovimentacoes;
-    }
-
-    public src.main.webapp.domain.pagamento.Titular getTitular() {
-        if (this.Titular == null) {
-            try {
-                var acessoConsulta = new Acesso().consultar(this.IdAcesso);
-                int idUsuario = acessoConsulta.getIdUsuario();
-                this.Titular = (src.main.webapp.domain.pagamento.Titular) new Usuario().consultar(idUsuario);
-            } catch (SQLException e) {
-                throw new RuntimeException("Não foi possível consultar o Titular da conta");
-            }
-        }
-        return Titular;
     }
 
     public double getSaldoAtual() {

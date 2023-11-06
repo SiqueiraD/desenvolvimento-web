@@ -14,7 +14,7 @@ public class Perfil extends DaoGenerico<Perfil> {
     private List<Funcionalidade> listaFuncionalidades;
 
     public List<Funcionalidade> getListaFuncionalidades() {
-        return this.listaFuncionalidades != null && !this.listaFuncionalidades.isEmpty() ? listaFuncionalidades : carregarListaFuncionalidades();
+        return this.listaFuncionalidades != null && !this.listaFuncionalidades.isEmpty() ? listaFuncionalidades : (this.listaFuncionalidades = carregarListaFuncionalidades());
     }
 
     @Override

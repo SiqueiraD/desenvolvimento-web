@@ -2,6 +2,7 @@ package src.main.webapp.service;
 
 import src.main.webapp.domain.gerenciamento.Acesso;
 import src.main.webapp.domain.gerenciamento.Usuario;
+import src.main.webapp.domain.seguranca.Funcionalidade;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
@@ -157,6 +158,14 @@ public class SegurancaAppService {
             return true;
         }
         return false;
+    }
+    public static Funcionalidade PegarFuncionalidade(int idFuncionalidade) {
+        try {
+            return new Funcionalidade().consultar(idFuncionalidade);
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível consultar a funcionalidade com id: " + idFuncionalidade);
+        }
+
     }
 
 }

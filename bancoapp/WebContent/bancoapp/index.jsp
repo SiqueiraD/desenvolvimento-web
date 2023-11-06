@@ -52,6 +52,18 @@
         </div>
         <% } %>
         <%@include file="funcionalidades.jsp" %>
+        <label
+                style="font-size: large; font-weight: bolder; color: red"
+        >
+            <%
+                String erro = (String) session.getAttribute("mensagemErroAcesso");
+                if (erro != null) {
+                    out.println(erro);
+                    out.println("<br />");
+                    session.setAttribute("mensagemErroAcesso", null);
+                }
+            %>
+        </label>
     </div>
 </div>
 </body>

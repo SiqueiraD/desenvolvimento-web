@@ -7,13 +7,13 @@ values (2, 'Gerente Geral'),
        (4, 'Cliente');
 
 insert into dbjava.Funcionalidade (IdFuncionalidade, Nome, URL)
-values (2, 'Cadastrar Usuario', '/cadastro/conta'),
-       (3, 'Contratar Funcionario', '/acesso/cadastro/usuario'),
+values (2, 'NaoUsar Usuario', '/conta/cadastro.jsp'),
+       (3, 'Contratar Funcionario', '/usuario/cadastro.jsp'),
        (4, 'Abrir conta', '/acesso/conta/cadastro'),
        (5, 'Fechar conta', '/acesso/cadastro/conta'),
        (6, 'Trocar Gerente de Conta', '/acesso/cadastro/conta'),
        (7, 'Gerenciar usuarios', '/acesso/lista/usuario'),
-       (8, 'Ver Extrato', '/acesso/conta/extrato'),
+       (8, 'Ver Extrato', '/conta/index.jsp'),
        (9, 'Transferir', '/acesso/conta/transferir');
 
 insert into Acesso (IdAcesso, IdUsuario, IdPerfil)

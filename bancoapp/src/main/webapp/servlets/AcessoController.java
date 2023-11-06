@@ -20,6 +20,7 @@ import java.util.Hashtable;
 public class AcessoController extends HttpServlet {
 
 
+
     boolean validaAcesso(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         if (!SegurancaAppService.VerificarTempoAcesso(session)) {
@@ -29,7 +30,6 @@ public class AcessoController extends HttpServlet {
         }
         return true;
     }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
@@ -37,8 +37,16 @@ public class AcessoController extends HttpServlet {
         if (!validaAcesso(req, resp))
             return;
         String token = (String) req.getSession().getAttribute("token");
-        if (newPath.contains("funcionalidades")) {
-            var idFuncionalidade = req.getParameter("idFuncionalidade");
+        if (newPath.contains("funcionalidade")) {
+            var idFuncionalidade = req.getParameter("id");
+            var funcionalidade = SegurancaAppService.PegarFuncionalidade(Integer.parseInt(idFuncionalidade));
+            String url = funcionalidade.getURL();
+            if (!SegurancaAppService.PermitirAcesso(req.getSession(), Integer.parseInt(idFuncionalidade))) {
+                req.getSession().setAttribute("mensagemErroAcesso", "Você não tem permissão para realizar essa ação.");
+                req.getRequestDispatcher( "/bancoapp/index.jsp" ).forward(req, resp);
+            } else
+            req.getRequestDispatcher( "/bancoapp" + url).forward(req, resp);
+            return;
         } else if (!newPath.contains("assets") && token.contains(":"))
             if (token.split(":").length > 2) {
                 Acesso acesso = SegurancaAppService.PegarAcesso(token);
@@ -83,12 +91,7 @@ public class AcessoController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
                 break;
             case "funcionalidades":
-                if (!SegurancaAppService.PermitirAcesso(session, Integer.parseInt(valor))) {
-                    session.setAttribute("mensagemErroAcesso", "Você não tem permissão para realizar essa ação.");
-                    resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
-                    return;
-                } else
-                    resp.sendRedirect(req.getContextPath() + "/acesso/funcionalidades" + "?idFuncionalidade=" + valor);
+                    resp.sendRedirect(req.getContextPath() + "/acesso/funcionalidade" + "?id=" + valor);
 
                 break;
             case "sair":
@@ -98,6 +101,7 @@ public class AcessoController extends HttpServlet {
             case "trocar":
                 token = token.split(":")[0] + ":" + token.split(":")[1];
                 session.setAttribute("token", token);
+                session.setAttribute("contas", null);
                 session.setAttribute("funcionalidades", null);
                 resp.sendRedirect(req.getContextPath() + "/acesso/index.jsp");
                 break;

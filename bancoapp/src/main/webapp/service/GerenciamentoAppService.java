@@ -3,7 +3,6 @@ package src.main.webapp.service;
 import src.main.webapp.domain.gerenciamento.Acesso;
 import src.main.webapp.domain.gerenciamento.Usuario;
 import src.main.webapp.domain.pagamento.Conta;
-import src.main.webapp.domain.pagamento.Titular;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,13 +10,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class GerenciamentoAppService {
-    public Usuario AbrirConta(Conta conta, Titular titular) {
-        return titular;
-    }
-
-    public Usuario FecharConta(Conta conta, Titular titular) {
-        return titular;
-    }
 
     public Usuario ContratarFuncionario(Acesso acesso) {
         return acesso.getUsuario();

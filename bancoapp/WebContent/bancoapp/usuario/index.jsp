@@ -16,7 +16,7 @@
 <%@include file="../../header.jsp" %>
 <div class="container mt-5 pt-5">
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-        INDEX DA CONTA
+        <%@include file="../funcionalidades.jsp" %>
     </div>
 </div>
 </body>
