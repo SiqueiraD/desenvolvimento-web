@@ -18,7 +18,7 @@
 <div class="container mt-5 pt-5">
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
         <h1 class="text-center">Formulário de Cadastro</h1>
-        <form action="#" method="post">
+        <form action="cadastro" method="post">
             <div class="form-group row">
                 <label for="cpf" class="col-sm-2 col-form-label">CPF</label>
                 <div class="col-sm-10">
@@ -49,17 +49,25 @@
             <div class="form-group row ">
                 <label for="endereco " class="col-sm-2 col-form-label ">Endereço</label>
                 <div class="col-sm-10 ">
-                    <input type="text " class="form-control " id="endereco " name="endereco "
+                    <input type="text " class="form-control " id="endereco " name="endereco"
                            placeholder="Digite seu endereço completo " required>
                 </div>
             </div>
             <div class="form-group row ">
                 <label for="telefone " class="col-sm-2 col-form-label ">Telefone</label>
                 <div class="col-sm-10 ">
-                    <input type="tel " class="form-control " id="telefone " name="telefone "
+                    <input type="tel " class="form-control " id="telefone " name="telefone"
                            placeholder="Digite seu número de telefone com DDD " required>
                 </div>
             </div>
+            <%
+                String erro = (String) session.getAttribute("mensagemErro");
+                if (erro != null) {
+                    out.println(erro);
+                    out.println("<br />");
+                    session.setAttribute("mensagemErro", null);
+                }
+            %>
             <!-- Botão para enviar o formulário -->
             <button type="submit " class="btn btn-primary btn-block ">Enviar</button>
         </form>

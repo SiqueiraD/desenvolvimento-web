@@ -31,10 +31,10 @@
                     <a class="nav-link" href="/">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login.jsp">Entrar</a>
+                    <a class="nav-link" href="/login">Entrar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cadastro.jsp">Cadastro</a>
+                    <a class="nav-link" href="/cadastro">Cadastro</a>
                 </li>
                 <% } else { %>
                 <li class="nav-item">

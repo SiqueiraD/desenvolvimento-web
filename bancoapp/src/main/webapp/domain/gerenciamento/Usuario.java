@@ -1,12 +1,18 @@
 package src.main.webapp.domain.gerenciamento;
 
 import src.main.webapp.domain.pagamento.Conta;
+import src.main.webapp.domain.pagamento.Movimentacao;
 import src.main.webapp.service.DaoGenerico;
+import src.main.webapp.service.QueryParamsSQL;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -17,6 +23,16 @@ public class Usuario extends DaoGenerico<Usuario> {
     private String Email;
     private String Senha;
     private String Endereco;
+
+    public Usuario(String CPF, String nome, String email, String senha, String endereco, String telefone) {
+        setCPF(CPF);
+        setNome(nome);
+        setEmail(email);
+        setSenha(senha);
+        setEndereco(endereco);
+        setTelefone(telefone);
+    }
+
     private String Telefone;
 
     public Usuario (){
@@ -24,6 +40,23 @@ public class Usuario extends DaoGenerico<Usuario> {
     }
     public Usuario (Hashtable<String, Object> propriedades){
         super(propriedades);
+    }
+
+
+    public List<Usuario> getUsuariosSemAcesso() throws SQLException {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT * FROM Usuario");
+        query.append(" WHERE IdUsuario not in (SELECT distinct IdUsuario FROM Acesso)");
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query.toString());
+        ResultSet rs = ps.executeQuery();
+        List<Usuario> lista = new ArrayList<>();
+        while (rs.next()) {
+            Usuario obj = converterResultSet(rs);
+            lista.add(obj);
+        }
+        conn.close();
+        return lista;
     }
 
     public List<Acesso> getListaAcessos() {
@@ -75,6 +108,10 @@ public class Usuario extends DaoGenerico<Usuario> {
         this.propriedades.put("telefone", telefone);
         this.Telefone = telefone;
     }
+    public void setEmail(String email) {
+        this.propriedades.put("email", email);
+        Email = email;
+    }
 
     public void setSenha(String senha) {
         try {
@@ -109,4 +146,9 @@ public class Usuario extends DaoGenerico<Usuario> {
     public String getSenha() {
         return Senha;
     }
+
+    public String getEmail() {
+        return Email;
+    }
+
 }

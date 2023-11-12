@@ -10,6 +10,21 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class GerenciamentoAppService {
+    public static Usuario CadastrarUsuario(Usuario usuario) throws ClientException {
+        try {
+            usuario.inserir();
+        } catch (SQLException e) {
+            throw new ClientException(e.getMessage());
+        }
+        return usuario;
+    }
+    public static List<Usuario> ListarUsuariosSolicitandoConta() throws ClientException {
+        try {
+            return new Usuario().getUsuariosSemAcesso();
+        } catch (SQLException e) {
+            throw new ClientException("Nao foi possível consultar usuarios Solicitando conta");
+        }
+    }
 
     public Usuario ContratarFuncionario(Acesso acesso) {
         return acesso.getUsuario();

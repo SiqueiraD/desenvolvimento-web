@@ -1,11 +1,16 @@
 package src.main.webapp.domain.gerenciamento;
 
 import src.main.webapp.domain.pagamento.Conta;
+import src.main.webapp.domain.pagamento.Movimentacao;
 import src.main.webapp.domain.seguranca.Funcionalidade;
 import src.main.webapp.domain.seguranca.Perfil;
 import src.main.webapp.service.DaoGenerico;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
