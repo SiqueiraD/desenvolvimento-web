@@ -14,7 +14,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-@WebFilter(filterName = "AcessoFiltro", urlPatterns = {"/acesso/*"})
+@WebFilter(filterName = "AcessoFiltro", urlPatterns = {"/acesso/*", "/conta/*"})
 public class AcessoFiltro implements Filter {
 
     @Override
